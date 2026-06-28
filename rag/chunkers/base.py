@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from loaders.base_loader import Document
+from rag.loaders.base import Document
 from dataclasses import dataclass
 from typing import Any
 

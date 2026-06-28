@@ -1,5 +1,5 @@
-from chunkers.base import BaseChunker, Chunk
-from loaders.base import Document
+from rag.chunkers.base import BaseChunker, Chunk
+from rag.loaders.base import Document
 
 
 class FixedSizeChunker(BaseChunker):

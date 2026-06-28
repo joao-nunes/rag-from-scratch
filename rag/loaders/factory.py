@@ -1,6 +1,6 @@
-from pdf import PDFLoader
-from docx import DOCXLoader
-from html import HTMLLoader
+from rag.loaders.pdf import PDFLoader
+from rag.loaders.docx import DOCXLoader
+from rag.loaders.html import HTMLLoader
 from pathlib import Path
 
 
@@ -13,7 +13,7 @@ class DocumentLoaderFactory:
     }
 
     @classmethod
-    def load_document(self, path: Path):
+    def load(self, path: Path):
         extension = path.suffix.lower()
         loader_cls = self._registry.get(extension)
 

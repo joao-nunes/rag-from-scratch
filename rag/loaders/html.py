@@ -1,4 +1,4 @@
-from loaders.base import BaseLoader, Document
+from rag.loaders.base import BaseLoader, Document
 from pathlib import Path
 
 
