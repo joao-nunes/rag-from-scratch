@@ -52,12 +52,13 @@ def main():
     ]
 
     pipeline.index(documents)
-
+    print(pipeline.summary())
+    
     answer = pipeline.ask(
-        "Synthetise the most common Domain Adaptation Techniques."
+        "What are example applications of CPath?"
     )
-
     print(answer)
+    
 
 if __name__=="__main__":
     main()
