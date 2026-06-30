@@ -1,0 +1,25 @@
+[
+    {
+        "id": "q001",
+        "category": "rag",
+        "difficulty": "easy",
+        "question": "What is Retrieval-Augmented Generation?",
+        "relevant_documents": [
+            "rag.pdf"
+        ],
+        "requires_multiple_documents": false,
+        "answer": "Retrieval-Augmented Generation combines retrieval with generation."
+    }
+,
+    {
+        "id": "q002",
+        "category": "rag",
+        "difficulty": "easy",
+        "question": "What is Retrieval-Augmented Generation?",
+        "relevant_documents": [
+            "rag.pdf"
+        ],
+        "requires_multiple_documents": false,
+        "answer": "Retrieval-Augmented Generation combines retrieval with generation."
+    }
+]

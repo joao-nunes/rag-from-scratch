@@ -38,7 +38,7 @@ def main():
     load_dotenv()
 
     pipeline = RAGPipeline(
-        chunker=FixedSizeChunker(),
+        chunker=FixedSizeChunker(chunk_size=1000, overlap=50),
         embedder=SentenceTransformerEmbedder(),
         retriever=FAISSRetriever(),
         prompt_builder=SimplePromptBuilder(),
@@ -55,7 +55,7 @@ def main():
     print(pipeline.summary())
     
     answer = pipeline.ask(
-        "What are example applications of CPath?"
+        "What is quality control in computational pathology?", k=20
     )
     print(answer)
     
