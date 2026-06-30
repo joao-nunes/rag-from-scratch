@@ -1,25 +1,164 @@
 [
-    {
-        "id": "q001",
-        "category": "rag",
-        "difficulty": "easy",
-        "question": "What is Retrieval-Augmented Generation?",
-        "relevant_documents": [
-            "rag.pdf"
-        ],
-        "requires_multiple_documents": false,
-        "answer": "Retrieval-Augmented Generation combines retrieval with generation."
-    }
-,
-    {
-        "id": "q002",
-        "category": "rag",
-        "difficulty": "easy",
-        "question": "What is Retrieval-Augmented Generation?",
-        "relevant_documents": [
-            "rag.pdf"
-        ],
-        "requires_multiple_documents": false,
-        "answer": "Retrieval-Augmented Generation combines retrieval with generation."
-    }
+{
+    "id": "q001",
+    "category": "rag",
+    "difficulty": "easy",
+    "question": "What is Retrieval-Augmented Generation (RAG)?",
+    "relevant_documents": ["rag.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "Retrieval-Augmented Generation combines information retrieval with a language model so that responses are grounded in retrieved external documents."
+  },
+  {
+    "id": "q002",
+    "category": "rag",
+    "difficulty": "medium",
+    "question": "What are the main components of a RAG pipeline?",
+    "relevant_documents": ["rag.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "A RAG pipeline consists of document indexing, retrieval, prompt augmentation, and answer generation."
+  },
+  {
+    "id": "q003",
+    "category": "transformer",
+    "difficulty": "easy",
+    "question": "What problem was the Transformer architecture designed to solve?",
+    "relevant_documents": ["attention_is_all_you_need.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "The Transformer was introduced to model long-range dependencies using self-attention instead of recurrent neural networks."
+  },
+  {
+    "id": "q004",
+    "category": "transformer",
+    "difficulty": "medium",
+    "question": "What is self-attention?",
+    "relevant_documents": ["attention_is_all_you_need.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "Self-attention allows each token to attend to every other token when computing its representation."
+  },
+  {
+    "id": "q005",
+    "category": "bert",
+    "difficulty": "easy",
+    "question": "What does BERT stand for?",
+    "relevant_documents": ["bert.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "Bidirectional Encoder Representations from Transformers."
+  },
+  {
+    "id": "q006",
+    "category": "bert",
+    "difficulty": "medium",
+    "question": "Why is BERT considered bidirectional?",
+    "relevant_documents": ["bert.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "BERT learns contextual representations by jointly attending to both left and right context during pretraining."
+  },
+  {
+    "id": "q007",
+    "category": "mil",
+    "difficulty": "easy",
+    "question": "What is Multiple Instance Learning (MIL)?",
+    "relevant_documents": ["mil_review.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "Multiple Instance Learning is a learning framework where labels are assigned to bags of instances instead of individual instances."
+  },
+  {
+    "id": "q008",
+    "category": "mil",
+    "difficulty": "medium",
+    "question": "Why is MIL commonly used in computational pathology?",
+    "relevant_documents": ["mil_review.pdf", "computational_pathology_review.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "Whole-slide images are too large to annotate exhaustively, so MIL enables learning from slide-level labels while treating image patches as instances."
+  },
+  {
+    "id": "q009",
+    "category": "computational_pathology",
+    "difficulty": "easy",
+    "question": "What is computational pathology?",
+    "relevant_documents": ["computational_pathology_review.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "Computational pathology applies machine learning and computer vision techniques to digital pathology images for diagnosis and research."
+  },
+  {
+    "id": "q010",
+    "category": "computational_pathology",
+    "difficulty": "medium",
+    "question": "What is a Whole Slide Image (WSI)?",
+    "relevant_documents": ["computational_pathology_review.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "A Whole Slide Image is a high-resolution digital scan of an entire pathology slide."
+  },
+  {
+    "id": "q011",
+    "category": "domain_adaptation",
+    "difficulty": "easy",
+    "question": "What is domain adaptation?",
+    "relevant_documents": ["domain_adaptation_review.pdf"],
+    "requires_multiple_documents": false,
+    "answer": "Domain adaptation aims to improve model performance on a target domain whose data distribution differs from the training domain."
+  },
+  {
+    "id": "q012",
+    "category": "domain_adaptation",
+    "difficulty": "medium",
+    "question": "Why is domain adaptation important in medical imaging?",
+    "relevant_documents": ["domain_adaptation_review.pdf", "computational_pathology_review.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "Medical images collected from different hospitals or scanners exhibit distribution shifts that can degrade model performance, making domain adaptation essential."
+  },
+  {
+    "id": "q013",
+    "category": "comparison",
+    "difficulty": "hard",
+    "question": "How does BERT differ from the original Transformer architecture?",
+    "relevant_documents": ["attention_is_all_you_need.pdf", "bert.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "The Transformer introduced the encoder-decoder architecture, whereas BERT uses only the encoder and is pretrained using bidirectional language modeling objectives."
+  },
+  {
+    "id": "q014",
+    "category": "comparison",
+    "difficulty": "hard",
+    "question": "How are Transformers used in modern RAG systems?",
+    "relevant_documents": ["attention_is_all_you_need.pdf", "rag.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "RAG systems use Transformer-based models for encoding queries, retrieving relevant documents, and generating grounded responses."
+  },
+  {
+    "id": "q015",
+    "category": "application",
+    "difficulty": "hard",
+    "question": "Why is MIL a suitable learning paradigm for computational pathology?",
+    "relevant_documents": ["mil_review.pdf", "computational_pathology_review.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "Computational pathology datasets often provide slide-level labels instead of patch-level annotations, making MIL an appropriate framework for learning from bags of image patches."
+  },
+  {
+    "id": "q016",
+    "category": "application",
+    "difficulty": "hard",
+    "question": "What challenge do both domain adaptation and computational pathology address together?",
+    "relevant_documents": ["domain_adaptation_review.pdf", "computational_pathology_review.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "They address the problem of maintaining model performance despite differences in data distributions across medical institutions."
+  },
+  {
+    "id": "q017",
+    "category": "integration",
+    "difficulty": "hard",
+    "question": "How can RAG improve question answering over computational pathology literature?",
+    "relevant_documents": ["rag.pdf", "computational_pathology_review.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "RAG retrieves relevant pathology documents before generation, allowing answers to be grounded in domain-specific literature."
+  },
+  {
+    "id": "q018",
+    "category": "integration",
+    "difficulty": "hard",
+    "question": "Why are Transformer models important for both BERT and RAG systems?",
+    "relevant_documents": ["attention_is_all_you_need.pdf", "bert.pdf", "rag.pdf"],
+    "requires_multiple_documents": true,
+    "answer": "BERT is built upon the Transformer encoder architecture, and modern RAG systems commonly rely on Transformer models for retrieval and generation."
+  }
 ]

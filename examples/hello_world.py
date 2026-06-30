@@ -16,7 +16,7 @@ def parse():
     parser.add_argument(
     "--path",
     type=str,
-    default="./examples/data",
+    default="./benchmarks/research/corpus",
     help="Directory containing the documents."
     )
     parser.set_defaults()
@@ -55,7 +55,7 @@ def main():
     print(pipeline.summary())
     
     answer = pipeline.ask(
-        "What is quality control in computational pathology?", k=20
+        "Why are Transformer models important for both BERT and RAG systems?", k=20
     )
     print(answer)
     
