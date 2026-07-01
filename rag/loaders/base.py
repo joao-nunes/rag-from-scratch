@@ -8,6 +8,7 @@ from typing import Any
 class Document:
     id: str
     text: str
+    title: str
     metadata: dict[str, Any]
 
 

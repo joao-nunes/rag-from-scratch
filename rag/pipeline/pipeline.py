@@ -1,4 +1,4 @@
-from rag.chunkers.base import BaseChunker
+from rag.chunkers.base import Chunk, BaseChunker
 from rag.embedders.base import BaseEmbedder
 from rag.generators.base import BaseGenerator, BasePromptBuilder
 from rag.loaders.base import Document
@@ -68,12 +68,7 @@ class RAGPipeline:
         Answer a question using Retrieval-Augmented Generation.
         """
 
-        query_embedding = self.embedder.embed([question])
-
-        retrieved_chunks = self.retriever.retrieve(
-            query_embedding=query_embedding,
-            k=k,
-        )
+        retrieved_chunks = self.search(question, k=k)
 
         prompt = self.prompt_builder.build(
             question=question,
@@ -99,8 +94,6 @@ class RAGPipeline:
             "",
             "Chunking",
             f"  Strategy            : {type(self.chunker).__name__}",
-            f"  Chunk size          : {self.chunker.chunk_size}",
-            f"  Overlap             : {self.chunker.overlap}",
             "",
             "Embedding",
             f"  Model               : {self.embedder.name}",
@@ -116,3 +109,19 @@ class RAGPipeline:
         ]
 
         return "\n".join(lines)
+    
+    def search(
+        self,
+        question: str,
+        k: int = 5,
+    ) -> list[Chunk]:
+        """
+        Retrieve the k most relevant chunks for a question.
+        """
+
+        query_embedding = self.embedder.embed([question])
+
+        return self.retriever.retrieve(
+            query_embedding=query_embedding,
+            k=k,
+        )

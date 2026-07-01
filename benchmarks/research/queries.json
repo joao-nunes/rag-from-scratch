@@ -37,157 +37,797 @@
   ]
 },
 
-  {
-    "id": "q002",
-    "category": "rag",
-    "difficulty": "medium",
-    "question": "What are the main components of a RAG pipeline?",
-    "relevant_documents": ["rag"],
-    "requires_multiple_documents": false,
-    "answer": "A RAG pipeline consists of document indexing, retrieval, prompt augmentation, and answer generation."
-  },
-  {
-    "id": "q003",
-    "category": "transformer",
-    "difficulty": "easy",
-    "question": "What problem was the Transformer architecture designed to solve?",
-    "relevant_documents": ["attention_is_all_you_need"],
-    "requires_multiple_documents": false,
-    "answer": "The Transformer was introduced to model long-range dependencies using self-attention instead of recurrent neural networks."
-  },
-  {
-    "id": "q004",
-    "category": "transformer",
-    "difficulty": "medium",
-    "question": "What is self-attention?",
-    "relevant_documents": ["attention_is_all_you_need"],
-    "requires_multiple_documents": false,
-    "answer": "Self-attention allows each token to attend to every other token when computing its representation."
-  },
-  {
-    "id": "q005",
-    "category": "bert",
-    "difficulty": "easy",
-    "question": "What does BERT stand for?",
-    "relevant_documents": ["bert"],
-    "requires_multiple_documents": false,
-    "answer": "Bidirectional Encoder Representations from Transformers."
-  },
-  {
-    "id": "q006",
-    "category": "bert",
-    "difficulty": "medium",
-    "question": "Why is BERT considered bidirectional?",
-    "relevant_documents": ["bert"],
-    "requires_multiple_documents": false,
-    "answer": "BERT learns contextual representations by jointly attending to both left and right context during pretraining."
-  },
-  {
-    "id": "q007",
-    "category": "mil",
-    "difficulty": "easy",
-    "question": "What is Multiple Instance Learning (MIL)?",
-    "relevant_documents": ["mil_review"],
-    "requires_multiple_documents": false,
-    "answer": "Multiple Instance Learning is a learning framework where labels are assigned to bags of instances instead of individual instances."
-  },
-  {
-    "id": "q008",
-    "category": "mil",
-    "difficulty": "medium",
-    "question": "Why is MIL commonly used in computational pathology?",
-    "relevant_documents": ["mil_review", "computational_pathology_review"],
-    "requires_multiple_documents": true,
-    "answer": "Whole-slide images are too large to annotate exhaustively, so MIL enables learning from slide-level labels while treating image patches as instances."
-  },
-  {
-    "id": "q009",
-    "category": "computational_pathology",
-    "difficulty": "easy",
-    "question": "What is computational pathology?",
-    "relevant_documents": ["computational_pathology_review"],
-    "requires_multiple_documents": false,
-    "answer": "Computational pathology applies machine learning and computer vision techniques to digital pathology images for diagnosis and research."
-  },
-  {
-    "id": "q010",
-    "category": "computational_pathology",
-    "difficulty": "medium",
-    "question": "What is a Whole Slide Image (WSI)?",
-    "relevant_documents": ["computational_pathology_review"],
-    "requires_multiple_documents": false,
-    "answer": "A Whole Slide Image is a high-resolution digital scan of an entire pathology slide."
-  },
-  {
-    "id": "q011",
-    "category": "domain_adaptation",
-    "difficulty": "easy",
-    "question": "What is domain adaptation?",
-    "relevant_documents": ["domain_adaptation_review"],
-    "requires_multiple_documents": false,
-    "answer": "Domain adaptation aims to improve model performance on a target domain whose data distribution differs from the training domain."
-  },
-  {
-    "id": "q012",
-    "category": "domain_adaptation",
-    "difficulty": "medium",
-    "question": "Why is domain adaptation important in medical imaging?",
-    "relevant_documents": ["domain_adaptation_review", "computational_pathology_review"],
-    "requires_multiple_documents": true,
-    "answer": "Medical images collected from different hospitals or scanners exhibit distribution shifts that can degrade model performance, making domain adaptation essential."
-  },
-  {
-    "id": "q013",
-    "category": "comparison",
-    "difficulty": "hard",
-    "question": "How does BERT differ from the original Transformer architecture?",
-    "relevant_documents": ["attention_is_all_you_need", "bert"],
-    "requires_multiple_documents": true,
-    "answer": "The Transformer introduced the encoder-decoder architecture, whereas BERT uses only the encoder and is pretrained using bidirectional language modeling objectives."
-  },
-  {
-    "id": "q014",
-    "category": "comparison",
-    "difficulty": "hard",
-    "question": "How are Transformers used in modern RAG systems?",
-    "relevant_documents": ["attention_is_all_you_need", "rag"],
-    "requires_multiple_documents": true,
-    "answer": "RAG systems use Transformer-based models for encoding queries, retrieving relevant documents, and generating grounded responses."
-  },
-  {
-    "id": "q015",
-    "category": "application",
-    "difficulty": "hard",
-    "question": "Why is MIL a suitable learning paradigm for computational pathology?",
-    "relevant_documents": ["mil_review", "computational_pathology_review"],
-    "requires_multiple_documents": true,
-    "answer": "Computational pathology datasets often provide slide-level labels instead of patch-level annotations, making MIL an appropriate framework for learning from bags of image patches."
-  },
-  {
-    "id": "q016",
-    "category": "application",
-    "difficulty": "hard",
-    "question": "What challenge do both domain adaptation and computational pathology address together?",
-    "relevant_documents": ["domain_adaptation_review", "computational_pathology_review"],
-    "requires_multiple_documents": true,
-    "answer": "They address the problem of maintaining model performance despite differences in data distributions across medical institutions."
-  },
-  {
-    "id": "q017",
-    "category": "integration",
-    "difficulty": "hard",
-    "question": "How can RAG improve question answering over computational pathology literature?",
-    "relevant_documents": ["rag", "computational_pathology_review"],
-    "requires_multiple_documents": true,
-    "answer": "RAG retrieves relevant pathology documents before generation, allowing answers to be grounded in domain-specific literature."
-  },
-  {
-    "id": "q018",
-    "category": "integration",
-    "difficulty": "hard",
-    "question": "Why are Transformer models important for both BERT and RAG systems?",
-    "relevant_documents": ["attention_is_all_you_need", "bert", "rag"],
-    "requires_multiple_documents": true,
-    "answer": "Transformers are important for both sys for their ability to model complex contextual relationships in text through self-attention, enabling powerful pre-training, fine-tuning, retrieval, and generation capabilities."
-  }
+{
+  "id": "q002",
+  "category": "rag",
+  "difficulty": "medium",
+  "question": "What are the main components of a RAG pipeline?",
+  "relevant_documents": [
+    "rag"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "A Retrieval-Augmented Generation (RAG) pipeline consists of four main components: document indexing, retrieval, prompt augmentation, and answer generation. During indexing, documents are processed, split into chunks if necessary, converted into vector embeddings, and stored in a vector database. At inference time, the retrieval component uses the user's query to identify the most relevant document chunks. These retrieved documents are then combined with the original query during prompt augmentation to provide additional context for the language model. Finally, the language model generates an answer conditioned on both the user's query and the retrieved information, producing responses that are grounded in external knowledge.",
+  "key_facts": [
+    {
+      "fact": "A RAG pipeline consists of document indexing, retrieval, prompt augmentation, and answer generation.",
+      "document": "rag"
+    },
+    {
+      "fact": "During indexing, documents are processed and stored in a searchable representation.",
+      "document": "rag"
+    },
+    {
+      "fact": "Documents are converted into vector embeddings and stored in a vector database during indexing.",
+      "document": "rag"
+    },
+    {
+      "fact": "The retrieval component identifies the most relevant document chunks for a user's query.",
+      "document": "rag"
+    },
+    {
+      "fact": "Prompt augmentation combines the user's query with the retrieved documents before generation.",
+      "document": "rag"
+    },
+    {
+      "fact": "The language model generates an answer using both the user's query and the retrieved context.",
+      "document": "rag"
+    },
+    {
+      "fact": "Using retrieved context grounds the generated response in external knowledge.",
+      "document": "rag"
+    }
+  ]
+},
+{
+  "id": "q003",
+  "category": "transformer",
+  "difficulty": "easy",
+  "question": "What problem was the Transformer architecture designed to solve?",
+  "relevant_documents": [
+    "attention_is_all_you_need"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "The Transformer architecture was designed to address the limitations of recurrent neural networks (RNNs) and convolutional neural networks (CNNs) for sequence transduction tasks such as machine translation. RNNs process sequences sequentially, making training difficult to parallelize and limiting their ability to capture long-range dependencies efficiently. The Transformer replaces recurrence and convolution with a self-attention mechanism that allows every token in a sequence to directly attend to every other token. This enables highly parallelizable training while more effectively modeling relationships between distant tokens.",
+  "key_facts": [
+    {
+      "fact": "The Transformer was proposed for sequence transduction tasks such as machine translation.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer was designed to overcome limitations of recurrent and convolutional architectures.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Recurrent neural networks process sequences sequentially, limiting parallelization during training.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer replaces recurrence and convolution with self-attention.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Self-attention allows each token to attend directly to every other token in the sequence.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer can model long-range dependencies more effectively than recurrent architectures.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer enables highly parallelizable training compared with recurrent models.",
+      "document": "attention_is_all_you_need"
+    }
+  ]
+},
+{
+  "id": "q004",
+  "category": "transformer",
+  "difficulty": "medium",
+  "question": "What is self-attention?",
+  "relevant_documents": [
+    "attention_is_all_you_need"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "Self-attention is the mechanism that enables each token in an input sequence to compute its representation by attending to every other token in the same sequence. For each token, the model assigns attention weights that indicate the importance of other tokens when constructing its contextual representation. This allows the model to capture both local and long-range dependencies regardless of their distance in the sequence. Because all tokens can be processed simultaneously, self-attention also enables efficient parallel computation, making it a fundamental component of the Transformer architecture.",
+  "key_facts": [
+    {
+      "fact": "Self-attention computes the representation of a token by attending to other tokens in the same sequence.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Each token assigns attention weights to determine the importance of other tokens.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The resulting representation is contextual because it incorporates information from multiple tokens.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Self-attention enables the model to capture both local and long-range dependencies.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The interaction between tokens is independent of their distance in the sequence.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Self-attention allows all tokens in a sequence to be processed in parallel.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Self-attention is the core mechanism underlying the Transformer architecture.",
+      "document": "attention_is_all_you_need"
+    }
+  ]
+},
+{
+  "id": "q005",
+  "category": "bert",
+  "difficulty": "easy",
+  "question": "What does BERT stand for?",
+  "relevant_documents": [
+    "bert"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "BERT stands for Bidirectional Encoder Representations from Transformers. It is a Transformer-based language model that uses only the encoder component of the Transformer architecture and learns bidirectional contextual representations of text through pretraining.",
+  "key_facts": [
+    {
+      "fact": "BERT stands for Bidirectional Encoder Representations from Transformers.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT is a Transformer-based language model.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT uses only the encoder component of the Transformer architecture.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT learns bidirectional contextual representations of text.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT is pretrained before being fine-tuned for downstream tasks.",
+      "document": "bert"
+    }
+  ]
+},
+{
+  "id": "q006",
+  "category": "bert",
+  "difficulty": "medium",
+  "question": "Why is BERT considered bidirectional?",
+  "relevant_documents": [
+    "bert"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "BERT is considered bidirectional because it learns contextual representations by jointly attending to both the left and right context of each token during pretraining. Unlike traditional language models that process text only from left to right or right to left, BERT uses the Masked Language Modeling (MLM) objective to predict masked tokens using information from both preceding and following words. This allows BERT to capture richer contextual information and produce more informative representations for downstream natural language processing tasks.",
+  "key_facts": [
+    {
+      "fact": "BERT learns contextual representations using both the left and right context of each token.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT jointly attends to preceding and following tokens during pretraining.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT uses the Masked Language Modeling (MLM) objective during pretraining.",
+      "document": "bert"
+    },
+    {
+      "fact": "In MLM, the model predicts masked tokens using their surrounding context.",
+      "document": "bert"
+    },
+    {
+      "fact": "Unlike traditional unidirectional language models, BERT is not restricted to processing text in a single direction.",
+      "document": "bert"
+    },
+    {
+      "fact": "Bidirectional training enables BERT to learn richer contextual representations of text.",
+      "document": "bert"
+    },
+    {
+      "fact": "These contextual representations improve performance on a wide range of downstream natural language processing tasks.",
+      "document": "bert"
+    }
+  ]
+},
+{
+  "id": "q007",
+  "category": "mil",
+  "difficulty": "easy",
+  "question": "What is Multiple Instance Learning (MIL)?",
+  "relevant_documents": [
+    "mil_review"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "Multiple Instance Learning (MIL) is a weakly supervised learning framework in which labels are assigned to collections of instances, called bags, rather than to individual instances. Each bag contains multiple instances, but only the bag label is available during training. The model must therefore learn which instances are responsible for the bag label without explicit instance-level supervision. MIL is particularly useful in applications where obtaining labels for individual instances is expensive or impractical, such as computational pathology.",
+  "key_facts": [
+    {
+      "fact": "Multiple Instance Learning (MIL) is a weakly supervised learning framework.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "MIL assigns labels to bags of instances rather than to individual instances.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "A bag is a collection of multiple instances.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "During training, only the bag labels are available.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "The model must infer which instances contribute to the bag label without instance-level annotations.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "MIL is well suited to problems where instance-level labeling is difficult or costly.",
+      "document": "mil_review"
+    }
+  ]
+},
+{
+  "id": "q008",
+  "category": "mil",
+  "difficulty": "medium",
+  "question": "Why is Multiple Instance Learning (MIL) commonly used in computational pathology?",
+  "relevant_documents": [
+    "mil_review",
+    "computational_pathology_review"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "Multiple Instance Learning (MIL) is widely used in computational pathology because whole-slide images (WSIs) are extremely large and obtaining detailed annotations for every tissue region or cell is time-consuming, expensive, and often impractical. Instead of requiring instance-level labels, MIL treats each WSI as a bag composed of many image patches (instances) and uses only the slide-level diagnosis during training. The model learns to identify the patches that are most relevant to the slide label, making MIL an effective and scalable approach for analyzing digital pathology images with weak supervision.",
+  "key_facts": [
+    {
+      "fact": "Whole-slide images are extremely large and contain many image patches.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Obtaining exhaustive instance-level annotations for whole-slide images is expensive and impractical.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "MIL is a weakly supervised learning framework that learns from bag-level labels.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "In computational pathology, a whole-slide image is treated as a bag and image patches are treated as instances.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "During training, only the slide-level label is required.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "The model learns which image patches are most informative for predicting the slide label.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "MIL provides an effective and scalable approach for analyzing digital pathology images under weak supervision.",
+      "document": "mil_review"
+    }
+  ]
+},
+{
+  "id": "q009",
+  "category": "computational_pathology",
+  "difficulty": "easy",
+  "question": "What is the primary goal of computational pathology?",
+  "relevant_documents": [
+    "computational_pathology_review"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "The primary goal of computational pathology is to apply computational methods, including machine learning and computer vision, to digital pathology data in order to improve disease diagnosis, prognosis, treatment planning, biomarker discovery, and pathology workflows.",
+  "key_facts": [
+    {
+      "fact": "Computational pathology applies computational methods to digital pathology data.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Machine learning is a key technique used in computational pathology.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Computer vision is widely used to analyze digital pathology images.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Computational pathology supports disease diagnosis.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Computational pathology can assist with prognosis and treatment planning.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Computational pathology facilitates biomarker discovery.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Computational pathology aims to improve pathology workflows through computational analysis.",
+      "document": "computational_pathology_review"
+    }
+  ]
+},
+{
+  "id": "q010",
+  "category": "computational_pathology",
+  "difficulty": "medium",
+  "question": "What is a Whole Slide Image (WSI)?",
+  "relevant_documents": [
+    "computational_pathology_review"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "A Whole Slide Image (WSI) is a high-resolution digital scan of an entire histopathology slide produced using a whole-slide scanner. WSIs preserve the complete tissue specimen at microscopic resolution, allowing pathologists and machine learning models to examine tissue architecture and cellular morphology digitally. Due to their gigapixel size, WSIs are typically divided into smaller image patches for efficient storage, processing, and analysis in computational pathology applications.",
+  "key_facts": [
+    {
+      "fact": "A Whole Slide Image (WSI) is a high-resolution digital scan of an entire histopathology slide.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "WSIs are produced using whole-slide scanners.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "WSIs preserve the complete tissue specimen at microscopic resolution.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "WSIs enable digital examination of tissue architecture and cellular morphology.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "WSIs are typically gigapixel images due to their high resolution.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "WSIs are commonly divided into smaller image patches for computational processing.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "WSIs are the primary data source for many computational pathology applications.",
+      "document": "computational_pathology_review"
+    }
+  ]
+},
+{
+  "id": "q011",
+  "category": "domain_adaptation",
+  "difficulty": "easy",
+  "question": "What is domain adaptation?",
+  "relevant_documents": [
+    "domain_adaptation_review"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "Domain adaptation is a branch of transfer learning that aims to improve a model's performance on a target domain whose data distribution differs from the source domain used for training. It addresses the problem of domain shift by adapting knowledge learned from the labeled source domain so that the model generalizes better to the target domain, where labeled data are often limited or unavailable.",
+  "key_facts": [
+    {
+      "fact": "Domain adaptation is a branch of transfer learning.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation involves a source domain and a target domain.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "The source and target domains have different data distributions.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation addresses the problem of domain shift.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "The goal of domain adaptation is to improve performance on the target domain.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation transfers knowledge learned from the source domain to the target domain.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "The target domain often has limited or no labeled data available for training.",
+      "document": "domain_adaptation_review"
+    }
+  ]
+},
+{
+  "id": "q012",
+  "category": "domain_adaptation",
+  "difficulty": "medium",
+  "question": "Why is domain adaptation important in medical imaging?",
+  "relevant_documents": [
+    "domain_adaptation_review",
+    "computational_pathology_review"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "Domain adaptation is important in medical imaging because images acquired at different hospitals, using different scanners, staining protocols, acquisition settings, or patient populations often follow different data distributions. As a result, models trained on one dataset may perform poorly when deployed on another. Domain adaptation mitigates these distribution shifts by transferring knowledge from the source domain to the target domain, improving model robustness and generalization without requiring large amounts of labeled target-domain data.",
+  "key_facts": [
+    {
+      "fact": "Medical imaging datasets acquired at different institutions often have different data distributions.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Differences in scanners, acquisition protocols, staining procedures, or patient populations contribute to domain shift.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Domain shift can significantly degrade the performance of machine learning models.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation aims to reduce the impact of distribution differences between source and target domains.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation transfers knowledge learned from the source domain to improve performance on the target domain.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation improves the robustness and generalization of models across different medical imaging datasets.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation reduces the need for large amounts of labeled target-domain data.",
+      "document": "domain_adaptation_review"
+    }
+  ]
+},
+{
+  "id": "q013",
+  "category": "comparison",
+  "difficulty": "hard",
+  "question": "How does BERT differ from the original Transformer architecture?",
+  "relevant_documents": [
+    "attention_is_all_you_need",
+    "bert"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "The original Transformer architecture consists of both an encoder and a decoder and was proposed for sequence-to-sequence tasks such as machine translation. In contrast, BERT uses only the encoder component of the Transformer architecture. Rather than generating text autoregressively, BERT is pretrained using self-supervised objectives, including Masked Language Modeling (MLM), to learn deep bidirectional contextual representations of text. These representations can then be fine-tuned for a wide range of downstream natural language processing tasks, such as text classification, question answering, and named entity recognition.",
+  "key_facts": [
+    {
+      "fact": "The original Transformer architecture consists of both an encoder and a decoder.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer was originally proposed for sequence-to-sequence tasks such as machine translation.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "BERT uses only the encoder component of the Transformer architecture.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT is pretrained using the Masked Language Modeling (MLM) objective.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT learns bidirectional contextual representations of text.",
+      "document": "bert"
+    },
+    {
+      "fact": "Unlike the original Transformer, BERT is designed to learn language representations rather than perform sequence-to-sequence generation.",
+      "documents": [
+        "attention_is_all_you_need",
+        "bert"
+      ]
+    },
+    {
+      "fact": "The pretrained BERT model can be fine-tuned for a wide range of downstream natural language processing tasks.",
+      "document": "bert"
+    }
+  ]
+},
+{
+  "id": "q014",
+  "category": "comparison",
+  "difficulty": "hard",
+  "question": "How are Transformers used in modern RAG systems?",
+  "relevant_documents": [
+    "attention_is_all_you_need",
+    "rag"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "Modern Retrieval-Augmented Generation (RAG) systems rely on Transformer-based models throughout the pipeline. Transformer encoders are commonly used to encode user queries and documents into dense vector representations for semantic retrieval. After the most relevant documents are retrieved, a Transformer-based language model uses the retrieved context together with the user's query to generate a grounded response. In this way, the Transformer architecture enables both semantic representation learning for retrieval and natural language generation within RAG systems.",
+  "key_facts": [
+    {
+      "fact": "Modern RAG systems commonly use Transformer-based models.",
+      "documents": [
+        "attention_is_all_you_need",
+        "rag"
+      ]
+    },
+    {
+      "fact": "Transformer encoders can encode user queries into dense vector representations.",
+      "document": "rag"
+    },
+    {
+      "fact": "Transformer encoders can encode documents into dense vector representations for semantic retrieval.",
+      "document": "rag"
+    },
+    {
+      "fact": "The retrieval component identifies relevant documents using these representations.",
+      "document": "rag"
+    },
+    {
+      "fact": "A Transformer-based language model generates an answer conditioned on the user's query and the retrieved context.",
+      "document": "rag"
+    },
+    {
+      "fact": "The Transformer architecture provides the foundation for both language understanding and language generation.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Combining Transformer-based retrieval and generation enables RAG systems to produce responses grounded in external knowledge.",
+      "documents": [
+        "attention_is_all_you_need",
+        "rag"
+      ]
+    }
+  ]
+},
+{
+  "id": "q015",
+  "category": "application",
+  "difficulty": "hard",
+  "question": "Why is Multiple Instance Learning (MIL) a suitable learning paradigm for computational pathology?",
+  "relevant_documents": [
+    "mil_review",
+    "computational_pathology_review"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "Multiple Instance Learning (MIL) is well suited to computational pathology because whole-slide images (WSIs) are extremely large and obtaining detailed annotations for every tissue region or image patch is expensive, time-consuming, and often impractical. Instead of requiring instance-level labels, MIL represents each WSI as a bag of image patches and uses only the slide-level diagnosis during training. The model learns to identify the most informative patches that contribute to the slide-level prediction, enabling efficient and scalable analysis of digital pathology images under weak supervision.",
+  "key_facts": [
+    {
+      "fact": "Whole-slide images are extremely large and contain many image patches.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Obtaining patch-level annotations for whole-slide images is expensive and impractical.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "MIL is a weakly supervised learning framework that learns from bag-level labels.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "In computational pathology, a whole-slide image is represented as a bag of image patches.",
+      "documents": [
+        "mil_review",
+        "computational_pathology_review"
+      ]
+    },
+    {
+      "fact": "MIL requires only slide-level labels during training rather than patch-level annotations.",
+      "documents": [
+        "mil_review",
+        "computational_pathology_review"
+      ]
+    },
+    {
+      "fact": "The model learns which image patches are most informative for predicting the slide-level label.",
+      "document": "mil_review"
+    },
+    {
+      "fact": "MIL enables efficient and scalable analysis of digital pathology images under weak supervision.",
+      "documents": [
+        "mil_review",
+        "computational_pathology_review"
+      ]
+    }
+  ]
+},
+{
+  "id": "q016",
+  "category": "application",
+  "difficulty": "hard",
+  "question": "Why is domain adaptation important in computational pathology?",
+  "relevant_documents": [
+    "domain_adaptation_review",
+    "computational_pathology_review"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "Computational pathology models often experience performance degradation when applied to data acquired from different hospitals, scanners, staining protocols, or patient populations due to distribution shifts between the source and target domains. Domain adaptation aims to mitigate these shifts, improving the generalization and robustness of computational pathology models when deployed across diverse clinical settings.",
+  "key_facts": [
+    {
+      "fact": "Computational pathology models are commonly applied to data collected from multiple institutions.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Data acquired at different institutions may exhibit distribution shifts due to variations in scanners, staining protocols, patient populations, or acquisition procedures.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Distribution shifts can significantly degrade the performance of machine learning models.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Domain adaptation aims to reduce the discrepancy between source and target domains.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Reducing domain shift improves model generalization to unseen target domains.",
+      "document": "domain_adaptation_review"
+    },
+    {
+      "fact": "Generalization across institutions is an important requirement for the clinical deployment of computational pathology models.",
+      "document": "computational_pathology_review"
+    },
+    {
+      "fact": "Domain adaptation helps computational pathology models remain accurate and robust across diverse clinical settings.",
+      "document": "domain_adaptation_review"
+    }
+  ]
+},
+{
+  "id": "q017",
+  "category": "rag",
+  "difficulty": "medium",
+  "question": "Why does Retrieval-Augmented Generation (RAG) reduce hallucinations in large language models?",
+  "relevant_documents": [
+    "rag"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "Retrieval-Augmented Generation (RAG) reduces hallucinations by retrieving relevant external documents before generation and providing them as context to the language model. Grounding the model's response in retrieved evidence enables it to rely on factual information rather than solely on its parametric knowledge, leading to more accurate and reliable answers.",
+  "key_facts": [
+    {
+      "fact": "RAG retrieves relevant documents before generating a response.",
+      "document": "rag"
+    },
+    {
+      "fact": "The retrieved documents are provided to the language model as additional context.",
+      "document": "rag"
+    },
+    {
+      "fact": "The language model conditions its response on the retrieved information.",
+      "document": "rag"
+    },
+    {
+      "fact": "Grounding responses in external knowledge reduces hallucinations.",
+      "document": "rag"
+    },
+    {
+      "fact": "Retrieved documents can contain information that is not stored in the model's parameters.",
+      "document": "rag"
+    },
+    {
+      "fact": "Using retrieved evidence improves the factual accuracy of generated answers.",
+      "document": "rag"
+    },
+    {
+      "fact": "RAG combines information retrieval with language generation to produce grounded responses.",
+      "document": "rag"
+    }
+  ]
+},
+{
+  "id": "q018",
+  "category": "integration",
+  "difficulty": "hard",
+  "question": "Why are Transformer models important for both BERT and Retrieval-Augmented Generation (RAG) systems?",
+  "relevant_documents": [
+    "attention_is_all_you_need",
+    "bert",
+    "rag"
+  ],
+  "requires_multiple_documents": true,
+  "answer": "The Transformer architecture provides the foundation for both BERT and Retrieval-Augmented Generation (RAG). BERT is built on the Transformer's encoder to learn contextual representations of text through self-attention. RAG similarly relies on Transformer-based models to encode queries and documents for semantic retrieval and to generate responses conditioned on the retrieved context. As a result, the Transformer architecture enables both language understanding and grounded text generation.",
+  "key_facts": [
+    {
+      "fact": "The Transformer architecture is based on the self-attention mechanism.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "BERT is built using the encoder component of the Transformer architecture.",
+      "document": "bert"
+    },
+    {
+      "fact": "BERT learns bidirectional contextual representations of text.",
+      "document": "bert"
+    },
+    {
+      "fact": "RAG combines information retrieval with language generation.",
+      "document": "rag"
+    },
+    {
+      "fact": "RAG uses Transformer-based models to encode queries and retrieved documents.",
+      "document": "rag"
+    },
+    {
+      "fact": "RAG uses a Transformer-based language model to generate responses from the retrieved context.",
+      "document": "rag"
+    },
+    {
+      "fact": "The Transformer architecture underpins both language understanding in BERT and grounded generation in RAG.",
+      "document": "attention_is_all_you_need"
+    }
+  ]
+},
+{
+  "id": "q019",
+  "category": "mil",
+  "difficulty": "medium",
+  "question": "Why is Multiple Instance Learning (MIL) particularly suitable for analyzing Whole Slide Images (WSIs)?",
+  "relevant_documents": [
+    "mil"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "Multiple Instance Learning (MIL) is particularly suitable for analyzing Whole Slide Images because obtaining annotations for every image patch is expensive and time-consuming. Instead of requiring instance-level labels, MIL learns from bags of instances using only slide-level labels, allowing models to identify informative regions while training on weakly labeled data.",
+  "key_facts": [
+    {
+      "fact": "Whole Slide Images consist of a large number of image patches or instances.",
+      "document": "mil"
+    },
+    {
+      "fact": "Annotating every image patch in a Whole Slide Image is expensive and labor-intensive.",
+      "document": "mil"
+    },
+    {
+      "fact": "MIL assigns labels to bags of instances rather than individual instances.",
+      "document": "mil"
+    },
+    {
+      "fact": "A Whole Slide Image can be represented as a bag of image patches.",
+      "document": "mil"
+    },
+    {
+      "fact": "MIL can be trained using only slide-level labels.",
+      "document": "mil"
+    },
+    {
+      "fact": "The model learns to identify informative instances that contribute to the bag label.",
+      "document": "mil"
+    },
+    {
+      "fact": "MIL enables learning from weakly labeled pathology datasets.",
+      "document": "mil"
+    }
+  ]
+},
+{
+  "id": "q020",
+  "category": "transformer",
+  "difficulty": "hard",
+  "question": "What are the main advantages of the Transformer architecture over recurrent neural networks (RNNs)?",
+  "relevant_documents": [
+    "attention_is_all_you_need"
+  ],
+  "requires_multiple_documents": false,
+  "answer": "The Transformer architecture replaces recurrence with self-attention, allowing all tokens in a sequence to be processed in parallel. This enables significantly more efficient training, improves the modeling of long-range dependencies, and reduces the sequential computation required by recurrent neural networks.",
+  "key_facts": [
+    {
+      "fact": "The Transformer architecture eliminates recurrence in favor of self-attention.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Self-attention allows every token to attend to all other tokens in the sequence.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer processes sequence elements in parallel during training.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Parallelization improves training efficiency compared with recurrent neural networks.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "The Transformer models long-range dependencies more effectively than recurrent architectures.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "Recurrent neural networks require sequential computation over the input sequence.",
+      "document": "attention_is_all_you_need"
+    },
+    {
+      "fact": "These advantages contributed to the Transformer becoming the foundation of many modern natural language processing models.",
+      "document": "attention_is_all_you_need"
+    }
+  ]
+}
 ]

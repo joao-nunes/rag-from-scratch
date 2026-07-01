@@ -13,6 +13,7 @@ class RetrievalMetrics:
     precision: float
     recall: float
     mrr: float
+    map: float
 
 
 def _identity(value: T) -> T:
@@ -55,11 +56,20 @@ def precision_at_k(
     relevant_keys = _as_key_set(relevant, relevant_key or key)
     key_fn = key or _identity
 
+    retrieved_keys = []
+    seen = set()
+
+    for item in top_results:
+        key_value = key_fn(item)
+        if key_value not in seen:
+            seen.add(key_value)
+            retrieved_keys.append(key_value)
+
     hits = sum(
-        1
-        for item in top_results
-        if key_fn(item) in relevant_keys
+        key in relevant_keys
+        for key in retrieved_keys
     )
+
     return hits / k
 
 
@@ -83,10 +93,10 @@ def recall_at_k(
 
     top_results = _top_k(retrieved, k)
     key_fn = key or _identity
+    
     retrieved_keys = {
-        key_fn(item)
-        for item in top_results
-    }
+    key_fn(item)
+    for item in top_results}
 
     return len(retrieved_keys & relevant_keys) / len(relevant_keys)
 
@@ -103,6 +113,10 @@ def reciprocal_rank(
 
     The score is 1 / rank of the first relevant item, or 0 when no relevant
     item is found. Pass k to limit the ranking depth.
+
+    Retrieved items are deduplicated according to ``key`` before computing the
+    rank so that multiple retrieved chunks from the same document count only
+    once.
     """
 
     if k is not None:
@@ -110,12 +124,27 @@ def reciprocal_rank(
     else:
         ranked_results = retrieved
 
-    relevant_keys = _as_key_set(relevant, relevant_key or key)
     key_fn = key or _identity
+    relevant_keys = _as_key_set(
+        relevant,
+        relevant_key or _identity,
+    )
 
-    for rank, item in enumerate(ranked_results, start=1):
-        if key_fn(item) in relevant_keys:
+    seen: set[Any] = set()
+
+    rank = 1
+    for item in ranked_results:
+        item_key = key_fn(item)
+
+        if item_key in seen:
+            continue
+
+        seen.add(item_key)
+
+        if item_key in relevant_keys:
             return 1 / rank
+
+        rank += 1
 
     return 0.0
 
@@ -141,6 +170,93 @@ def mean_reciprocal_rank(
 
     return sum(
         reciprocal_rank(
+            retrieved,
+            relevant,
+            k=k,
+            key=key,
+            relevant_key=relevant_key,
+        )
+        for retrieved, relevant in zip(
+            retrieved_results,
+            relevant_results,
+            strict=True,
+        )
+    ) / len(retrieved_results)
+
+
+def average_precision(
+    retrieved: Sequence[T],
+    relevant: Iterable[Any],
+    k: int | None = None,
+    key: KeyFn[T] | None = None,
+    relevant_key: KeyFn[Any] | None = None,
+) -> float:
+    """
+    Compute Average Precision (AP) for one ranked retrieval result.
+
+    AP is the mean of the precision values computed at the ranks where a
+    relevant document is retrieved.
+    """
+
+    if k is not None:
+        ranked_results = _top_k(retrieved, k)
+    else:
+        ranked_results = retrieved
+
+    key_fn = key or _identity
+    relevant_key_fn = relevant_key or _identity
+
+    relevant_keys = _as_key_set(
+        relevant,
+        relevant_key_fn,
+    )
+
+    if not relevant_keys:
+        return 0.0
+
+    seen: set[Any] = set()
+
+    hits = 0
+    precision_sum = 0.0
+    rank = 0
+
+    for item in ranked_results:
+        item_key = key_fn(item)
+
+        if item_key in seen:
+            continue
+
+        seen.add(item_key)
+        rank += 1
+
+        if item_key in relevant_keys:
+            hits += 1
+            precision_sum += hits / rank
+
+    return precision_sum / len(relevant_keys)
+
+
+def mean_average_precision(
+    retrieved_results: Sequence[Sequence[T]],
+    relevant_results: Sequence[Iterable[Any]],
+    k: int | None = None,
+    key: KeyFn[T] | None = None,
+    relevant_key: KeyFn[Any] | None = None,
+) -> float:
+    """
+    Compute Mean Average Precision (MAP).
+    """
+
+    if len(retrieved_results) != len(relevant_results):
+        raise ValueError(
+            "retrieved_results and relevant_results must have the same length."
+        )
+
+    if not retrieved_results:
+        return 0.0
+
+    return sum(
+        average_precision(
             retrieved,
             relevant,
             k=k,
@@ -189,6 +305,7 @@ def evaluate_retrieval(
     precision_sum = 0.0
     recall_sum = 0.0
     reciprocal_rank_sum = 0.0
+    average_precision_sum = 0.0
 
     for query_id, retrieved in retrieved_results.items():
         relevant = relevant_results[query_id]
@@ -209,14 +326,23 @@ def evaluate_retrieval(
         reciprocal_rank_sum += reciprocal_rank(
             retrieved,
             relevant,
-            k=k,
+            k=None,
             key=key,
             relevant_key=relevant_key,
         )
+        average_precision_sum += average_precision(
+            retrieved,
+            relevant,
+            k,
+            key=key,
+            relevant_key=relevant_key,
+        )
+
 
     query_count = len(retrieved_results)
     return RetrievalMetrics(
         precision=precision_sum / query_count,
         recall=recall_sum / query_count,
         mrr=reciprocal_rank_sum / query_count,
+        map=average_precision_sum / query_count,
     )
