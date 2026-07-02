@@ -9,17 +9,18 @@ from rag.chunkers.identity import IdentityChunker
 from rag.embedders.sentencetransformer import SentenceTransformerEmbedder
 from rag.retrievers.faiss import FAISSRetriever
 from rag.rerankers.cross_encoder import CrossEncoderReranker
-
+from rag.retrievers.base import RetrievalResult
 from rag.generators.prompts import SimplePromptBuilder
 from dotenv import load_dotenv
 import json
 from rag.evaluation.metrics import RetrievalExperiment
 from rag.evaluation.retrieval import evaluate_retrieval
+from rag.evaluation.analysis import RetrievalAnalysis
 from dataclasses import dataclass, asdict
 from datetime import datetime
 import csv
 from time import perf_counter
-
+from textwrap import shorten
 
 def parse():
 
@@ -64,6 +65,70 @@ def load_queries(path: Path) -> list[Query]:
         for item in data
     ]
 
+def print_analysis(
+    analysis: RetrievalAnalysis,
+    top_k: int = 5,
+) -> None:
+    """
+    Pretty-print the retrieval results for a SciFact query.
+    """
+
+    separator = "=" * 100
+    subsection = "-" * 100
+
+    print(separator)
+    print(f"Query ID : {analysis.query_id}")
+    print(separator)
+
+    print("\nClaim")
+    print(subsection)
+    print(analysis.claim)
+
+    print("\nRelevant Documents")
+    print(subsection)
+
+    for document_id in sorted(analysis.relevant_document_ids):
+        print(f"• {document_id}")
+
+    def print_results(title: str, results: list[RetrievalResult]):
+
+        print(f"\n{title}")
+        print(subsection)
+
+        for rank, result in enumerate(results[:top_k], start=1):
+
+            chunk = result.chunk
+
+            document_id = int(chunk.document_id)
+
+            relevant = (
+                "✓"
+                if document_id in analysis.relevant_document_ids
+                else "✗"
+            )
+
+            snippet = shorten(
+                chunk.text.replace("\n", " "),
+                width=120,
+                placeholder="..."
+            )
+
+            print(
+                f"{rank:>2}. "
+                f"{relevant} "
+                f"Doc {document_id:<8} "
+                f"Score {result.score:>8.4f}"
+            )
+
+            print(f"    {snippet}")
+
+    print_results("Dense Retriever", analysis.retrieved)
+
+    if analysis.reranked is not None:
+        print_results("Cross-Encoder Reranker", analysis.reranked)
+
+    print(separator)
+
 def main():
 
     args = parse()
@@ -104,7 +169,7 @@ def main():
         id=doc_id,
         title=data["title"],
         text=data["title"] + "\n\n" + data["text"],
-        metadata={},
+        metadata={"title": data["title"]},
     )
     for doc_id, data in corpus.items()
 ]
@@ -114,7 +179,7 @@ def main():
     index_time = perf_counter() - start
     print(pipeline.summary())
     
-    question = "0-dimensional biomaterials lack inductive properties. Determine whether the claim is supported, contradicted, or not enough information based on the retrieved evidence."
+    question = "1,000 genomes project enables mapping of genetic sequence variation consisting of rare variants with larger penetrance effects than common variants. Determine whether the claim is supported, contradicted, or not enough information based on the retrieved evidence."
    
     answer = pipeline.ask(
        question, k=50
@@ -135,6 +200,7 @@ def main():
     retrieved_results = {}
     relevant_results = {}
     query_times = []
+    relevant_analysis = []
     for query_id, question in queries.items():
         start = perf_counter()
         retrieved = pipeline.search(
@@ -146,17 +212,30 @@ def main():
         )
 
         if pipeline.reranker is not None:
-            retrieved = pipeline.reranker.rerank(
+            reranked = pipeline.reranker.rerank(
                 question,
                 retrieved,
             )
 
-        retrieved_results[query_id] = retrieved
+        retrieved_results[query_id] = reranked
 
         relevant_results[query_id] = list(
             qrels[query_id].keys()
         )
 
+        analysis = RetrievalAnalysis(
+            benchmark="SciFact",
+            query_id=query_id,
+            claim=question,
+            relevant_document_ids={int(doc_id)for doc_id in qrels[query_id].keys()},
+            retrieved=retrieved,
+            reranked=reranked
+        )
+        relevant_analysis.append(analysis)
+        
+    for analysis in relevant_analysis[:5]:
+        print_analysis(analysis)
+        
     query_time_ms = (
     sum(query_times)
     / len(query_times)
@@ -203,6 +282,8 @@ def main():
                 writer.writeheader()
 
             writer.writerow(asdict(experiment))
+        
+        
 
 if __name__=="__main__":
     main()
