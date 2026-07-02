@@ -3,6 +3,7 @@ from rag.embedders.base import BaseEmbedder
 from rag.generators.base import BaseGenerator, BasePromptBuilder
 from rag.loaders.base import Document
 from rag.retrievers.base import BaseRetriever
+from rag.rerankers.base import BaseReranker
 import numpy as np
 from dataclasses import dataclass
 
@@ -23,11 +24,13 @@ class RAGPipeline:
         retriever: BaseRetriever,
         prompt_builder: BasePromptBuilder,
         generator: BaseGenerator,
+        reranker: BaseReranker | None = None,
     ) -> None:
 
         self.chunker = chunker
         self.embedder = embedder
         self.retriever = retriever
+        self.reranker = reranker
         self.prompt_builder = prompt_builder
         self.generator = generator
         self._num_chunks = 0
@@ -62,7 +65,8 @@ class RAGPipeline:
     def ask(
         self,
         question: str,
-        k: int = 5,
+        k: int = 50,
+        final_k: int = 5
     ) -> str:
         """
         Answer a question using Retrieval-Augmented Generation.
@@ -70,9 +74,17 @@ class RAGPipeline:
 
         retrieved_chunks = self.search(question, k=k)
 
+        if self.reranker is not None:
+            retrieved_chunks = self.reranker.rerank(
+                question,
+                retrieved_chunks,
+            )
+
+        retrieved_chunks = retrieved_chunks[:final_k]
+
         prompt = self.prompt_builder.build(
             question=question,
-            chunks=retrieved_chunks,
+            results=retrieved_chunks,
         )
 
         return self.generator.generate(prompt)
@@ -113,7 +125,7 @@ class RAGPipeline:
     def search(
         self,
         question: str,
-        k: int = 5,
+        k: int = 50,
     ) -> list[Chunk]:
         """
         Retrieve the k most relevant chunks for a question.

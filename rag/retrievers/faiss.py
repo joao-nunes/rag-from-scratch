@@ -2,7 +2,7 @@ import faiss
 import numpy as np
 
 from rag.chunkers.base import Chunk
-from rag.retrievers.base import BaseRetriever
+from rag.retrievers.base import BaseRetriever, RetrievalResult
 
 
 class FAISSRetriever(BaseRetriever):
@@ -28,8 +28,10 @@ class FAISSRetriever(BaseRetriever):
         embeddings = embeddings.astype(np.float32)
 
         dimension = embeddings.shape[1]
+        
+        faiss.normalize_L2(embeddings)
 
-        self.index = faiss.IndexFlatL2(dimension)
+        self.index = faiss.IndexFlatIP(dimension)
 
         self.index.add(embeddings)
 
@@ -57,12 +59,24 @@ class FAISSRetriever(BaseRetriever):
         if query_embedding.ndim == 1:
             query_embedding = query_embedding.reshape(1, -1)
 
-        _, indices = self.index.search(
+        faiss.normalize_L2(query_embedding)
+
+        scores, indices = self.index.search(
             query_embedding,
             k
         )
 
-        return [
-            self.chunks[i]
-            for i in indices[0]
-        ]
+        results = []
+
+        for _, (idx, score) in enumerate(
+            zip(indices[0], scores[0]),
+            start=1,
+        ):
+            results.append(
+                RetrievalResult(
+                    chunk=self.chunks[idx],
+                    score=float(score),
+                )
+            )
+
+        return results

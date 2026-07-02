@@ -1,5 +1,5 @@
-from rag.chunkers.base import Chunk
 from rag.generators.base import BasePromptBuilder
+from rag.retrievers.base import RetrievalResult
 
 
 class SimplePromptBuilder(BasePromptBuilder):
@@ -10,7 +10,7 @@ class SimplePromptBuilder(BasePromptBuilder):
     def build(
         self,
         question: str,
-        chunks: list[Chunk],
+        results: list[RetrievalResult],
     ) -> str:
         """
         Build a prompt for the language model using the retrieved chunks.
@@ -18,7 +18,9 @@ class SimplePromptBuilder(BasePromptBuilder):
 
         context_parts = []
 
-        for chunk in chunks:
+        for result in results:
+
+            chunk = result.chunk
 
             if self.include_sources:
                 source = chunk.metadata.get("path", chunk.document_id)
@@ -31,14 +33,16 @@ class SimplePromptBuilder(BasePromptBuilder):
             else:
                 context_parts.append(chunk.text)
 
-        context = "\n\n" + "-" * 80 + "\n\n".join(context_parts)
+        separator = "\n\n" + "-" * 80 + "\n\n"
+        context = separator.join(context_parts)
 
         prompt = f"""
 You are a helpful AI assistant.
 
-Answer the user's question using ONLY the provided context.
+Answer the user's question using only the provided context.
 
-If the answer cannot be found in the context, say that you do not know.
+If the context does not contain enough information, reply that you do not know.
+Do not use outside knowledge.
 
 Context
 =======

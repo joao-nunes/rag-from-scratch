@@ -8,11 +8,17 @@ from rag.generators.openai import OpenAIGenerator
 from rag.chunkers.identity import IdentityChunker
 from rag.embedders.sentencetransformer import SentenceTransformerEmbedder
 from rag.retrievers.faiss import FAISSRetriever
+from rag.rerankers.cross_encoder import CrossEncoderReranker
+
 from rag.generators.prompts import SimplePromptBuilder
 from dotenv import load_dotenv
 import json
+from rag.evaluation.metrics import RetrievalExperiment
 from rag.evaluation.retrieval import evaluate_retrieval
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
+from datetime import datetime
+import csv
+from time import perf_counter
 
 
 def parse():
@@ -72,8 +78,9 @@ def main():
 
     pipeline = RAGPipeline(
         chunker=IdentityChunker(),
-        embedder=SentenceTransformerEmbedder(),
+        embedder=SentenceTransformerEmbedder(model_name="BAAI/bge-base-en-v1.5"),
         retriever=FAISSRetriever(),
+        reranker=CrossEncoderReranker(),
         prompt_builder=SimplePromptBuilder(),
         generator=OpenAIGenerator(),
     )
@@ -102,59 +109,100 @@ def main():
     for doc_id, data in corpus.items()
 ]
 
+    start = perf_counter()
     pipeline.index(documents)
+    index_time = perf_counter() - start
     print(pipeline.summary())
     
     question = "0-dimensional biomaterials lack inductive properties. Determine whether the claim is supported, contradicted, or not enough information based on the retrieved evidence."
    
     answer = pipeline.ask(
-       question, k=10
+       question, k=50
     )
     print(answer)
 
-    retrieved_chunks = pipeline.search(question, k=10)
-
+    retrieved_chunks = pipeline.search(question, k=50)
+    retrieved_chunks = pipeline.reranker.rerank(question, retrieved_chunks)
+    retrieved_chunks = retrieved_chunks[:5]
     print(f"\nQuestion: {question}\n")
 
-    for i, chunk in enumerate(retrieved_chunks, start=1):
+    for i, result in enumerate(retrieved_chunks, start=1):
         print(f"Rank {i}")
-        print(f"Document: {chunk.document_id}")
-        print(chunk.text[:300])
+        print(f"Document: {result.chunk.document_id}")
+        print(result.chunk.text[:300])
         print("-" * 80)
 
     retrieved_results = {}
     relevant_results = {}
-
+    query_times = []
     for query_id, question in queries.items():
-
+        start = perf_counter()
         retrieved = pipeline.search(
             question,
-            k=10,
+            k=50,
         )
+        query_times.append(
+        perf_counter() - start
+        )
+
+        if pipeline.reranker is not None:
+            retrieved = pipeline.reranker.rerank(
+                question,
+                retrieved,
+            )
 
         retrieved_results[query_id] = retrieved
 
         relevant_results[query_id] = list(
             qrels[query_id].keys()
         )
-        
-    metrics = evaluate_retrieval(
-        retrieved_results,
-        relevant_results,
-        k=10,
-        key=lambda chunk: chunk.document_id,
-        relevant_key= lambda doc_id: doc_id,
-    )
-    
+
+    query_time_ms = (
+    sum(query_times)
+    / len(query_times)
+) * 1000
+
     for k in [1, 3, 5, 10, 20]:
         metrics = evaluate_retrieval(
             retrieved_results,
             relevant_results,
             k=k,
-            key=lambda chunk: chunk.document_id,
+            key=lambda result: result.chunk.document_id,
             relevant_key= lambda doc_id: doc_id,
         )
         print(k, metrics)
+        experiment_id=f"exp_{datetime.now():%Y%m%d_%H%M%S}"
+        experiment = RetrievalExperiment(
+                experiment_id=experiment_id,
+                date=datetime.now().isoformat(timespec="seconds"),
+                dataset="SciFact",
+                embedding_model=pipeline.embedder.name,
+                embedding_dimension=pipeline.embedder.embedding_dimension,
+                chunker=type(pipeline.chunker).__name__,
+                chunk_size=getattr(pipeline.chunker, "chunk_size", None),
+                overlap=getattr(pipeline.chunker, "overlap", None),
+                retriever=type(pipeline.retriever).__name__,
+                similarity_metric="L2",
+                k=k,
+                precision=metrics.precision,
+                recall=metrics.recall,
+                mrr=metrics.mrr,
+                map=metrics.map,
+                index_time_s=index_time,
+                query_time_ms=query_time_ms,
+            )
+
+
+        with open("./examples/results.csv", "a", newline="") as f:
+            writer = csv.DictWriter(
+                f,
+                fieldnames=RetrievalExperiment.__dataclass_fields__.keys(),
+            )
+
+            if f.tell() == 0:
+                writer.writeheader()
+
+            writer.writerow(asdict(experiment))
 
 if __name__=="__main__":
     main()

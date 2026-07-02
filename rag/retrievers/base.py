@@ -1,6 +1,13 @@
 from abc import ABC, abstractmethod
 import numpy as np
 from rag.chunkers.base import Chunk
+from dataclasses import dataclass
+
+
+@dataclass
+class RetrievalResult:
+    chunk: Chunk
+    score: float
 
 class BaseRetriever(ABC):
 

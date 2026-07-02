@@ -16,6 +16,26 @@ class RetrievalMetrics:
     map: float
 
 
+@dataclass(frozen=True)
+class RetrievalExperiment:
+    experiment_id: str
+    date: str
+    dataset: str
+    embedding_model: str
+    embedding_dimension: int
+    chunker: str
+    chunk_size: int | None
+    overlap: int | None
+    retriever: str
+    similarity_metric: str
+    k: int
+    precision: float
+    recall: float
+    mrr: float
+    map: float
+    index_time_s: float
+    query_time_ms: float
+
 def _identity(value: T) -> T:
     return value
 
